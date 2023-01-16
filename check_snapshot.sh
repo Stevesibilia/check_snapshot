@@ -112,10 +112,10 @@ done
 #answer
 if [ -z "$RESULT" ]
 then
-    echo "OK - No VM has more than $CRITICAL snapshot $AGE days old"
+    echo "OK - No VM has more than $NUMBER snapshots and $AGE days old"
     exit 0
 else
-    echo "CRITICAL"
+    echo "CRITICAL - VMs have more than $NUMBER snapshots which are older than $AGE days"
     for i in "${!RESULT[@]}"; do
         echo ${RESULT[i]}
     done
