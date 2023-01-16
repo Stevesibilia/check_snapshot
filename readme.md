@@ -1,8 +1,7 @@
 Check number of snapshot for each vm in xoa.
-
-
-
-
+  Requirements:
+  
+​    JSON processor package (jq) needs to be installed on the system
 
   Options:
 
@@ -10,7 +9,7 @@ Check number of snapshot for each vm in xoa.
 
 ​    -s     fqdn xoa server
 
-​    -a     snapshot's age (a.k.a. grace period)
+​    -a     snapshot's age (a.k.a. grace period) - in days
 
 ​    -n     number of snapshot
 
