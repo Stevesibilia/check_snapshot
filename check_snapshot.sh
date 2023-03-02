@@ -63,15 +63,23 @@ done
 
 check_snapshot()
 {
+#get response code  from curl
+STATUS=$(curl -k -s -o /dev/null -w "%{http_code}" -b authenticationToken=${TOKEN} "https://${XOASERVER}/rest/v0" )
+#check if response code is 200
+if [ "$STATUS" -ne 200 ]; then
+    echo "CRITICAL - Can't connect to $XOASERVER - Response code: $STATUS"
+    exit 2
+fi
+
 VMLIST=$(curl -k -s -b authenticationToken=${TOKEN} "https://${XOASERVER}/rest/v0/vms?filter=snapshots:length:>=${NUMBER}&fields=name_label,power_state" | jq .[].name_label)
 #convert to array
 readarray -t VMARRAY <<<"$VMLIST"
 #get rid of ""
 for i in "${!VMARRAY[@]}"; do
-    cleanarray+=($( echo "${VMARRAY[i]}" | sed 's/^.//;s/.$//'))
+    cleanarray+=("$( echo "${VMARRAY[i]}" | sed 's/^.//;s/.$//')")
 done
 VMARRAY=("${cleanarray[@]}")
-unset arraypulito
+unset cleanarray
 
 #get rid of EXCLUDED vms
 for excluded in  "${EXCLUDED[@]}"; do
